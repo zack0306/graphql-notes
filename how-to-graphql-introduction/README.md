@@ -1,4 +1,6 @@
 # GraphQL Notes
+[Tutorial](https://www.howtographql.com/)
+
 Query language for APIs and a runtime for fulfilling queries using existing data
 - Aims to provide an easily readable description of data in an API
 - Allows the client to only receive data it needs and nothing more than that
