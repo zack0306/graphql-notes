@@ -7,4 +7,4 @@ const feed = (parent, args, context, info) => {
   return context.db.query.links({ first, skip, where }, info);
 };
 
-export default feed;
+module.exports = { feed };
