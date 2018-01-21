@@ -15,7 +15,9 @@ In `./database/datamodel.graphql`, replace `Post` with:
 
 ```
 type Link {
-  id: String! @unique
+  id: ID! @unique
+  description: String!
+  url: String!
 }
 ```
 
@@ -61,4 +63,27 @@ const feed = (parent, args, context, info) => {
 };
 
 export default feed;
+```
+
+  - The names of resolver functions must be identical to field names in `Query` types
+  - Resolver arguments:
+    - `parent` has the initial value for the resolver chain
+      - This argument is used when resolving nested queries (for non-trivial cases)
+      - If the client queries for a user's name and ID, the server must resolve:
+        1. The user (`parent`)
+        2. `parent.id`
+        3. `parent.name`
+    - `args` contains input arguments for the query, which are defined in the application schema
+      - `filter` is used to build a filter object (`where`) to retrieve links that fit a certain criteria
+    - `context` is an object that holds custom data while it's being passed through the resolver chain
+    - `info` contains the AST of the query
+      - Also has information about which part in the resolver chain is currently being executed
+  - In the `return` statement, Prisma's `links` resolver is being used to retrieve the feed
+- Now that the `feed` resolver is done, we must make sure it's used when the `GraphQLServer` is instantiated
+  - In `index.js` we will put:
+
+```javascript
+const resolvers = {
+  Query,
+}
 ```
