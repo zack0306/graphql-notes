@@ -24,11 +24,11 @@ Translate requirements into GraphQL queries, mutations, and subscriptions
 1. Adjust the data model your Prisma database service is using
 2. Deploy the Prisma database to apply changes
 3. Extend application schema with a new root field
-4. Implement the resolves for the root field
+4. Implement the resolvers for the root field
   - Delegate execution to the right Prisma resolver
 
 
-## Bootstraep Your GraphQL Server
+## Bootstrap Your GraphQL Server
 The tool `graphql-cli` bootstraps a GraphQL server (similar to `create-react-app`)
 - Set up your GraphQL server:
 

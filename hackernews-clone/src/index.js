@@ -1,6 +1,6 @@
-const { GraphQLServer } = require('graphql-yoga')
-const { Prisma } = require('prisma-binding')
-const { Query } = require('./resolvers/Query');
+const { GraphQLServer } = require('graphql-yoga');
+const { Prisma } = require('prisma-binding');
+const Query = require('./resolvers/Query');
 
 const resolvers = {
   Query,
@@ -20,4 +20,4 @@ const server = new GraphQLServer({
   }),
 });
 
-server.start(() => console.log('Server is running on http://localhost:4000'))
+server.start(() => console.log('Server is running on http://localhost:4000'));
