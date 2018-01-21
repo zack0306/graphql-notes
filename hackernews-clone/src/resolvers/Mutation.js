@@ -1,6 +1,21 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { APP_SECRET } = require('../utils');
+
 const post = (parent, args, context, info) => {
   const { url, description } = args;
   return context.db.mutation.createLink({ data: { url, description } }, info);
-}
+};
 
-module.exports = { post };
+const signup = async (parent, args, context, info) => {
+  const password = await bcrypt.hash(args.password, 10);
+  const user = await context.db.mutation.createUser({
+    data: { ...args, password },
+  });
+
+  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+
+  return { token, user };
+};
+
+module.exports = { post, signup };
