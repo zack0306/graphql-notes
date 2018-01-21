@@ -111,3 +111,40 @@ const signup = async (parent, args, context, info) => {
   return { token, user };
 };
 ```
+
+
+## Implementing the `login` Mutation
+We need to add the `login` mutation to the application schema:
+
+```
+type Mutation {
+  post(url: String!, description: String!): Link!
+  signup(email: String!, password: String!, name: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+}
+```
+
+Next, implement the resolver in `src/resolvers/Mutation.js`:
+
+```javascript
+const login = async (parent, args, context, info) => {
+  const user = await context.db.query.user({ where: { email: args.email } });
+  if (!user) throw new Error(`Could not find user with email: ${args.email}`);
+
+  const valid = await bcrypt.compare(args.password, user.password);
+  if (!valid) throw new Error('Invalid password');
+
+  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  return { token, user };
+};
+```
+
+After exporting the new resolver, you can test this mutation in the playground:
+
+```
+mutation {
+  login(email: "gorogorogoro@gmail.com", password: "kiryuchan") {
+    token
+  }
+}
+```
