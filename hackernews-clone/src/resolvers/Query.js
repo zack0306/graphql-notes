@@ -1,4 +1,4 @@
-const feed = (parent, args, context, info) => {
+function feed(parent, args, context, info) {
   const { filter, first, skip } = args;
   const where = filter
     ? { OR: [{ urlContains: filter }, { descriptionContains: filter }] }
