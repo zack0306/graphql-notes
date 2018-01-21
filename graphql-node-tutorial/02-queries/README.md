@@ -56,13 +56,13 @@ Resolvers will be in `Query.js`, `Mutation.js`, and `Subscription.js`
 const feed = (parent, args, context, info) => {
   const { filter, first, skip } = args;
   const where = filter
-    ? { OR: [{ urlContains: filter }, { descriptionContains: filter }] }
+    ? { OR: [{ url_contains: filter }, { description_contains: filter }] }
     : {};
 
   return context.db.query.links({ first, skip, where }, info);
 };
 
-export default feed;
+module.exports = { feed };
 ```
 
   - The names of resolver functions must be identical to field names in `Query` types

@@ -19,3 +19,4 @@ A server that needs to:
 ## Table of Contents:
 1. [Getting Started](./01-getting-started)
 2. [Queries](./02-queries)
+3. [Mutations](./03-mutations)
