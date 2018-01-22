@@ -21,3 +21,4 @@ A server that needs to:
 2. [Queries](./02-queries)
 3. [Mutations](./03-mutations)
 4. [Signup & Login](./04-signup-and-login)
+5. [Applying Authentication](./05-applying-authentication)
