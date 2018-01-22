@@ -33,3 +33,70 @@ type User {
 
 
 ## Adjusting the `post` Resolver
+We need to send the `User` `id` or `email` during the `post`
+- Example mutation:
+
+```
+mutation {
+  createLink(data: {
+    url: "https://www.graphql.org",
+    description: "Official GraphQL Website",
+    postedBy: {
+      conenct: {
+        email: "johndoe@graph.cool"
+      }
+    }
+  }) {
+    id
+  }
+}
+```
+
+The changes we make to `src/resolvers/Mutation.js`:
+
+```javascript
+const post = (parent, { url, description }, context, info) => {
+  const userId = getUserId(context);
+
+  return context.db.mutation.createLink(
+    {
+      data: {
+        url,
+        description,
+        postedBy: {
+          connect: {
+            id: userId
+          },
+        },
+      },
+    },
+    info,
+  );
+};
+```
+
+- Here, we're making use of a `getUserId` function that we haven't defined yet
+
+
+We will add `getUserId` to `src/helpers.js`:
+
+```javascript
+const getUserId = (context) => {
+  const Authorization = context.request.get('Authorization');
+  if (!Authorization) throw new Error('Not authenticated');
+
+  const token = Authorization.replace('Bearer ', '');
+  const { userId } = jwt.verify(token, APP_SECRET);
+  return userId;
+};
+```
+
+- `context` has a `request` property that represents the incoming HTTP request that brings the query or mutation
+- It also provides access to the request headers
+  - Authentication tokens are usually found in the `Authorization` header field
+- The token is prepended with "Bearer "
+  - After replacing that string, we verify the token using the `jwtwebtoken` library
+
+
+## Authenticating a `User`
+We need to use the authentication token to make requests on behalf of a specific `User`
