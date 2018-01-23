@@ -107,3 +107,62 @@ We need to use the authentication token to make requests on behalf of a specific
 
 
 ## Adding a `vote` Mutation
+We will need to add a new `Vote` type to `database/datamodel.graphql`
+- User will also need to be updated to keep track of all their votes
+
+```
+type Vote {
+  id: ID! @unique
+  link: Link!
+  user: User!
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  links: [Link!]!
+  votes: [Vote!]!
+}
+```
+
+- After these changes, Prisma needs to be deployed again
+
+The next step is to create the root level field for the `vote` mutation in `src/schema.graphql`:
+
+```
+# import Link, Vote from "./generated/prisma.graphql"
+
+type Mutation {
+  post(url: String!, description: String!): Link
+  signup(name: String!, email: String!, password: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  vote(linkId: String!): Vote
+}
+```
+
+Next step is to implement the `vote` resolver in `src/resolvers/Mutation.js`:
+
+```javascript
+const vote = async (parent, args, context, info) {
+  const userId = getUserId(context);
+  const { linkId } = args;
+  const voteExists = await context.db.exists.Vote({
+    user: { id: userId },
+    link: { id: linkId },
+  });
+
+  if (voteExists) throw new Error('Already voted for this link');
+
+  return context.db.mutation.createVote(
+    {
+      data: {
+        user: { connect: { id: userId } },
+        link: { connect: { id: linkId } },
+      },
+    },
+    info,
+  );
+};
+```
