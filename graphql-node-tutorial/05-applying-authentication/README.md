@@ -100,3 +100,10 @@ const getUserId = (context) => {
 
 ## Authenticating a `User`
 We need to use the authentication token to make requests on behalf of a specific `User`
+- To test this flow:
+  1. Send a `login` mutation
+  2. Copy the token in the response and paste it into an `Authorization` HTTP header
+  3. Test the `post` mutation and `feed` query
+
+
+## Adding a `vote` Mutation
