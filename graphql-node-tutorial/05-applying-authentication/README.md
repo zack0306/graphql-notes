@@ -33,7 +33,7 @@ type User {
 
 
 ## Adjusting the `post` Resolver
-We need to send the `User` `id` or `email` during the `post`
+We need to send the `User`'s `id` or `email` during the `post`
 - Example mutation:
 
 ```
@@ -42,7 +42,7 @@ mutation {
     url: "https://www.graphql.org",
     description: "Official GraphQL Website",
     postedBy: {
-      conenct: {
+      connect: {
         email: "johndoe@graph.cool"
       }
     }
@@ -65,7 +65,7 @@ const post = (parent, { url, description }, context, info) => {
         description,
         postedBy: {
           connect: {
-            id: userId
+            id: userId,
           },
         },
       },

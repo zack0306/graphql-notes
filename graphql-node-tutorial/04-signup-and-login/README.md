@@ -45,12 +45,12 @@ Logging in consists of these steps:
 ## Implementing the `signup` Mutation
 First, define the application secret in `utils.js`
 
-Next, we will use libraries for generating and validating JWTs
+Next, we will use libraries for generating and validating JWTs as well as hashing user passwords
 - `jsonwebtoken`
 - `bcryptjs`
 
 Now, we can update the application schema to start adding the new functionality
-- Add the `signup` mutation to `scr/schema.graphql`:
+- Add the `signup` mutation to `src/schema.graphql`:
 
 ```
 type Mutation {
