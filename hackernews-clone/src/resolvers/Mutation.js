@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET } = require('../utils');
-const getUserId = require('../helpers');
+const { getUserId } = require('../helpers');
 
 const post = (parent, { url, description }, context, info) => {
   const userId = getUserId(context);
