@@ -27,7 +27,7 @@ type User {
 }
 ```
 
-- After making these changes, deploy Primsa again
+- After making these changes, deploy Prisma again
 - We've created the one-to-many relationship, but now we need to ensure that the data is properly entered into the database when a `post` mutation is received
   - We need to adjust the `post` resolver
 
@@ -38,15 +38,17 @@ We need to send the `User`'s `id` or `email` during the `post`
 
 ```
 mutation {
-  createLink(data: {
-    url: "https://www.graphql.org",
-    description: "Official GraphQL Website",
-    postedBy: {
-      connect: {
-        email: "johndoe@graph.cool"
+  createLink(
+    data: {
+      url: "https://www.graphql.org",
+      description: "Official GraphQL Website",
+      postedBy: {
+        connect: {
+          email: "johndoe@graph.cool"
+        }
       }
     }
-  }) {
+  ) {
     id
   }
 }
